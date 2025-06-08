@@ -14,8 +14,8 @@ def generate_launch_description():
     
     # goal point parameter
     x_goal_value = 1.0
-    y_goal_value = -0.5
-    theta_goal_deg_value = 90.0
+    y_goal_value = 0.0
+    theta_goal_deg_value = 0.0
 
     return LaunchDescription([
         # rviz2 노드 실행

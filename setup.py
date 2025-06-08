@@ -30,6 +30,7 @@ setup(
             "parking2=termproject.parking2:main",
             "waypoint=termproject.waypoint:main",
             "waypoint_const_vel=termproject.waypoint_const_vel:main",
+            "waypoint_col_avoid=termproject.waypoint_col_avoid:main",
         ],
     }, 
 )

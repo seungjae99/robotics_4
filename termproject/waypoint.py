@@ -31,10 +31,6 @@ class WaypointNavigator(Node):
         w3_x = self.get_parameter('waypoint_3_x').get_parameter_value().double_value
         w3_y = self.get_parameter('waypoint_3_y').get_parameter_value().double_value
 
-        # waypoint_1 = (1.0, -0.5)
-        # waypoint_2 = (3.0, 0.5)
-        # waypoint_3 = (2.0, -0.5)
-        
         waypoint_1 = (w1_x, w1_y)
         waypoint_2 = (w2_x, w2_y)
         waypoint_3 = (w3_x, w3_y)
@@ -43,15 +39,16 @@ class WaypointNavigator(Node):
 
         self.current_idx = 0
 
-        self.pos_threshold   = 0.05
-        self.theta_threshold = math.radians(2.0)
+        self.pos_threshold   = 0.1
+        self.theta_threshold = math.radians(15.0)
         self.v_max     = 0.12
+        self.v_min = 0.08
         self.omega_max = 0.8
 
         # 제어 이득
         self.k_rho   = 0.2
         self.k_alpha = 1.0
-        self.k_beta  = -0.6
+        self.k_beta  = -0.3
 
         self.phase = "MOVE"
 
@@ -93,7 +90,7 @@ class WaypointNavigator(Node):
                 v = self.k_rho * rho
 
                 # 속도 제한
-                v = max(-self.v_max, min(self.v_max, v))
+                v = max(self.v_min, min(self.v_max, v))
                 omega = max(-self.omega_max, min(self.omega_max, omega))
 
                 # publish

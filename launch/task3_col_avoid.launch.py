@@ -15,10 +15,10 @@ def generate_launch_description():
     # goal point parameter
     waypoint_1_x_value = 1.0
     waypoint_1_y_value = -0.5
-    waypoint_2_x_value = 3.0
+    waypoint_2_x_value = 2.0
     waypoint_2_y_value = 0.5
-    waypoint_3_x_value = 2.0
-    waypoint_3_y_value = -0.5
+    waypoint_3_x_value = 3.0
+    waypoint_3_y_value = 0.0
 
     return LaunchDescription([
         # rviz2 노드 실행
@@ -33,8 +33,8 @@ def generate_launch_description():
         # task3 : waypoint 노드 실행
         Node(
             package='termproject',
-            executable='waypoint_const_vel',
-            name='waypoint_const_vel',
+            executable='waypoint_col_avoid',
+            name='waypoint_col_avoid',
             output='screen',
             parameters=[
                 {'waypoint_1_x': waypoint_1_x_value},
