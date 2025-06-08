@@ -1,0 +1,31 @@
+# === ROS 1/2 공통 ===
+build/
+install/
+log/
+*.log
+
+# === ROS 2 colcon 관련 ===
+colcon_ws/
+*.pyc
+__pycache__/
+
+# === 에디터 관련 (VSCode, JetBrains 등) ===
+.vscode/
+.idea/
+
+# === OS / 시스템 관련 ===
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# === Python 패키지 관련 ===
+*.egg-info/
+.eggs/
+dist/
+*.pkl
+
+# === CMake 관련 ===
+CMakeFiles/
+cmake_install.cmake
+Makefile
