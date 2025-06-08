@@ -8,7 +8,7 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    pkg_share = get_package_share_directory('tb3_controller')
+    pkg_share = get_package_share_directory('termproject')
 
     rviz_config = os.path.join(pkg_share, 'rviz', 'robotics_rviz.rviz')
     
@@ -32,7 +32,7 @@ def generate_launch_description():
 
         # task3 : waypoint 노드 실행
         Node(
-            package='tb3_controller',
+            package='termproject',
             executable='waypoint_const_vel',
             name='waypoint_const_vel',
             output='screen',

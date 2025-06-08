@@ -8,7 +8,7 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    pkg_share = get_package_share_directory('tb3_controller')
+    pkg_share = get_package_share_directory('termproject')
 
     rviz_config = os.path.join(pkg_share, 'rviz', 'robotics_rviz.rviz')
     
@@ -29,7 +29,7 @@ def generate_launch_description():
 
         # task2 : parking 노드 실행
         Node(
-            package='tb3_controller',
+            package='termproject',
             executable='parking2',
             name='parking2',
             output='screen',
