@@ -12,6 +12,7 @@ def generate_launch_description():
 
     rviz_config = os.path.join(pkg_share, 'rviz', 'robotics_rviz.rviz')
     
+    # goal point parameter
     x_goal_value = 1.0
     y_goal_value = -0.5
     theta_goal_deg_value = 90.0

@@ -33,8 +33,8 @@ def generate_launch_description():
         # task3 : waypoint 노드 실행
         Node(
             package='tb3_controller',
-            executable='waypoint',
-            name='waypoint',
+            executable='waypoint_const_vel',
+            name='waypoint_const_vel',
             output='screen',
             parameters=[
                 {'waypoint_1_x': waypoint_1_x_value},

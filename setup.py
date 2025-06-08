@@ -18,8 +18,8 @@ setup(
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='choi',
-    maintainer_email='choi@todo.todo',
-    description='TODO: Package description',
+    maintainer_email='seungjaechoi9@gmail.com',
+    description='Mobile Robotics Term Project TEAM 4',
     license='TODO: License declaration',
     tests_require=['pytest'],
     entry_points={
@@ -29,6 +29,7 @@ setup(
             "visual_pub=termproject.visual_pub:main",
             "parking2=termproject.parking2:main",
             "waypoint=termproject.waypoint:main",
+            "waypoint_const_vel=termproject.waypoint_const_vel:main",
         ],
     }, 
 )

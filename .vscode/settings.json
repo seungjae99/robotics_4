@@ -1,0 +1,32 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/choi/termproject_ws/build/termproject",
+        "/home/choi/termproject_ws/install/termproject/lib/python3.10/site-packages",
+        "/home/choi/robotics_ws/build/tb3_controller",
+        "/home/choi/robotics_ws/install/tb3_controller/lib/python3.10/site-packages",
+        "/home/choi/turtlebot_ws/build/turtlebot3_teleop",
+        "/home/choi/turtlebot_ws/install/turtlebot3_teleop/lib/python3.10/site-packages",
+        "/home/choi/turtlebot_ws/build/turtlebot3_example",
+        "/home/choi/turtlebot_ws/install/turtlebot3_example/lib/python3.10/site-packages",
+        "/home/choi/turtlebot_ws/install/turtlebot3_msgs/local/lib/python3.10/dist-packages",
+        "/home/choi/turtlebot_ws/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages",
+        "/home/choi/turtlebot_ws/install/dynamixel_sdk/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/choi/termproject_ws/build/termproject",
+        "/home/choi/termproject_ws/install/termproject/lib/python3.10/site-packages",
+        "/home/choi/robotics_ws/build/tb3_controller",
+        "/home/choi/robotics_ws/install/tb3_controller/lib/python3.10/site-packages",
+        "/home/choi/turtlebot_ws/build/turtlebot3_teleop",
+        "/home/choi/turtlebot_ws/install/turtlebot3_teleop/lib/python3.10/site-packages",
+        "/home/choi/turtlebot_ws/build/turtlebot3_example",
+        "/home/choi/turtlebot_ws/install/turtlebot3_example/lib/python3.10/site-packages",
+        "/home/choi/turtlebot_ws/install/turtlebot3_msgs/local/lib/python3.10/dist-packages",
+        "/home/choi/turtlebot_ws/install/dynamixel_sdk_custom_interfaces/local/lib/python3.10/dist-packages",
+        "/home/choi/turtlebot_ws/install/dynamixel_sdk/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
+}
