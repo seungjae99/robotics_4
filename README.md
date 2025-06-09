@@ -54,7 +54,7 @@ ros2 launch termproject task3.launch.py
 
 ## TODO
 
-- Task3: Add collision avoidance
+- ~~Task3: Add collision avoidance~~
 
 ---
 
