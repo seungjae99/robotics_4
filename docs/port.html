@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>모바일 로보틱스 텀 프로젝트 — 기술 포트폴리오</title>
+<style>
+/* ── Color Tokens ── */
+:root {
+  --ink:       #1a1f2e;
+  --ink-2:     #3d4460;
+  --ink-3:     #6b7490;
+  --divider:   #dde2ee;
+  --bg:        #f7f8fc;
+  --bg-card:   #ffffff;
+  --bg-code:   #f0f2f8;
+  --accent:    #1a56db;
+  --accent-2:  #0e3fa3;
+  --accent-3:  #e8f0fe;
+  --orange:    #c45000;
+  --orange-bg: #fff4ec;
+  --green:     #166534;
+  --green-bg:  #f0faf4;
+  --purple:    #5b21b6;
+  --purple-bg: #f5f3ff;
+  --red:       #991b1b;
+  --red-bg:    #fef2f2;
+}
+
+/* ── Reset & Base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Pretendard', 'Apple SD Gothic Neo', 'Noto Sans KR',
+               -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 15px;
+  line-height: 1.75;
+  background: var(--bg);
+  color: var(--ink);
+}
+
+/* ── Topbar ── */
+.topbar {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(247,248,252,0.92);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--divider);
+  padding: 0 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 52px;
+}
+.topbar-logo { font-size: 13px; font-weight: 700; letter-spacing: 0.04em; color: var(--accent); text-decoration: none; }
+.topbar-nav  { display: flex; gap: 24px; list-style: none; }
+.topbar-nav a { font-size: 12.5px; color: var(--ink-3); text-decoration: none; font-weight: 500; }
+.topbar-nav a:hover { color: var(--accent); }
+@media (max-width: 600px) { .topbar-nav { display: none; } }
+
+/* ── Page ── */
+.page { max-width: 900px; margin: 0 auto; padding: 0 24px 64px; }
+
+/* ── Hero ── */
+.hero {
+  padding: 52px 0 40px;
+  border-bottom: 1px solid var(--divider);
+  margin-bottom: 36px;
+}
+.hero-eyebrow {
+  font-size: 11.5px; font-weight: 700; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--accent); margin-bottom: 12px;
+}
+.hero h1 {
+  font-size: 30px; font-weight: 800; color: var(--ink);
+  line-height: 1.25; margin-bottom: 16px;
+}
+.hero h1 span { color: var(--accent); }
+.hero-sub { font-size: 15.5px; color: var(--ink-2); max-width: 680px; line-height: 1.8; margin-bottom: 20px; }
+.badge-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.badge {
+  display: inline-flex; align-items: center;
+  font-size: 12px; font-weight: 600; letter-spacing: 0.03em;
+  padding: 4px 11px; border-radius: 5px; border: 1px solid;
+}
+.b-ros   { color: var(--green);  background: var(--green-bg);  border-color: #bbf7d0; }
+.b-py    { color: #1e40af;       background: #eff6ff;          border-color: #bfdbfe; }
+.b-lidar { color: var(--purple); background: var(--purple-bg); border-color: #ddd6fe; }
+.b-ctrl  { color: var(--orange); background: var(--orange-bg); border-color: #fed7aa; }
+
+/* ── Metric Row ── */
+.metric-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 44px; }
+.metric-card {
+  background: var(--bg-card); border: 1px solid var(--divider);
+  border-radius: 10px; padding: 20px 22px; border-top: 3px solid var(--accent);
+}
+.metric-num   { font-size: 28px; font-weight: 800; color: var(--accent); line-height: 1; margin-bottom: 4px; }
+.metric-label { font-size: 12px; color: var(--ink-3); font-weight: 500; letter-spacing: 0.02em; }
+.metric-desc  { font-size: 12.5px; color: var(--ink-2); margin-top: 6px; line-height: 1.5; }
+
+/* ── Section ── */
+.section { margin-bottom: 44px; }
+.section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+.section-num {
+  font-size: 11px; font-weight: 700; color: var(--accent);
+  background: var(--accent-3); padding: 2px 8px; border-radius: 4px;
+  letter-spacing: 0.06em;
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+}
+.section-title { font-size: 17px; font-weight: 700; color: var(--ink); }
+
+/* ── Card ── */
+.card {
+  background: var(--bg-card); border: 1px solid var(--divider);
+  border-radius: 10px; padding: 26px 28px; margin-bottom: 14px;
+}
+.card-title {
+  font-size: 12px; font-weight: 700; letter-spacing: 0.08em;
+  text-transform: uppercase; color: var(--ink-3); margin-bottom: 14px;
+}
+.card p { color: var(--ink-2); margin-bottom: 10px; }
+.card p:last-child { margin-bottom: 0; }
+
+/* ── Grid ── */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+@media (max-width: 680px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+
+/* ── Callout ── */
+.callout {
+  border-radius: 8px; border-left: 4px solid;
+  padding: 12px 16px; margin: 12px 0;
+  font-size: 14px; line-height: 1.65;
+}
+.callout-problem  { background: var(--red-bg);    border-color: #ef4444; color: #7f1d1d; }
+.callout-solution { background: var(--green-bg);  border-color: #22c55e; color: var(--green); }
+.callout-info     { background: var(--accent-3);  border-color: var(--accent); color: #1e3a8a; }
+.callout-warn     { background: var(--orange-bg); border-color: #f97316; color: var(--orange); }
+
+/* ── Flow ── */
+.flow { display: flex; flex-direction: column; gap: 10px; }
+.flow-step { display: flex; align-items: flex-start; gap: 14px; }
+.flow-num {
+  min-width: 26px; height: 26px;
+  background: var(--accent); color: #fff;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0; margin-top: 2px;
+}
+.flow-body { font-size: 14px; color: var(--ink-2); line-height: 1.6; }
+.flow-body strong { color: var(--ink); }
+
+/* ── Pipeline ── */
+.pipeline {
+  display: flex; align-items: center; flex-wrap: wrap;
+  gap: 6px; margin: 14px 0 8px;
+}
+.pipe-step {
+  background: var(--bg-code); border: 1px solid var(--divider);
+  border-radius: 8px; padding: 10px 16px; min-width: 90px; text-align: center;
+}
+.plabel { font-size: 11px; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.06em; }
+.pval   { font-size: 13px; font-weight: 600; color: var(--ink); margin-top: 2px; }
+.pipe-arrow { color: var(--ink-3); font-size: 18px; font-weight: 300; }
+.pipe-note  { font-size: 12.5px; color: var(--ink-3); margin-top: 4px; }
+
+/* ── Table ── */
+table { width: 100%; border-collapse: collapse; font-size: 14px; margin-top: 4px; }
+thead tr { background: var(--bg-code); }
+th {
+  text-align: left; padding: 9px 12px;
+  font-size: 11.5px; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--ink-3);
+}
+td { padding: 10px 12px; color: var(--ink-2); border-bottom: 1px solid #eef0f6; }
+tbody tr:last-child td { border-bottom: none; }
+
+/* ── Code Block ── */
+pre {
+  background: #1e2130;
+  border: 1px solid #2d3148;
+  border-radius: 8px;
+  padding: 18px 20px;
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 12.5px;
+  line-height: 1.65;
+  color: #c9d1e0;
+  overflow-x: auto;
+  margin-top: 8px;
+}
+.kw   { color: #ff7b72; }
+.fn   { color: #d2a8ff; }
+.str  { color: #a5d6ff; }
+.cmt  { color: #6b7890; font-style: italic; }
+.num  { color: #79c0ff; }
+.type { color: #ffa657; }
+
+/* ── Inline Code ── */
+code {
+  font-family: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  font-size: 12.5px;
+  background: var(--bg-code);
+  border: 1px solid var(--divider);
+  border-radius: 3px;
+  padding: 1px 5px;
+  color: #9a3412;
+}
+pre code { background: none; border: none; padding: 0; color: inherit; font-size: inherit; }
+
+/* ── Result Image ── */
+.result-wrap { margin: 14px 0; }
+.result-img  { max-width: 100%; border-radius: 8px; border: 1px solid var(--divider); display: block; }
+.result-caption { font-size: 12.5px; color: var(--ink-3); margin-top: 8px; }
+
+/* ── Stack Item ── */
+.stack-item {
+  background: var(--bg-card); border: 1px solid var(--divider);
+  border-radius: 10px; padding: 18px 20px;
+}
+.stack-name { font-size: 14px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.stack-role { font-size: 13px; color: var(--ink-3); line-height: 1.55; }
+
+/* ── Footer ── */
+.footer {
+  padding-top: 28px;
+  border-top: 1px solid var(--divider);
+  font-size: 12px; color: var(--ink-3);
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 8px;
+  margin-top: 20px;
+}
+
+/* ── State Badge ── */
+.state-badge {
+  display: inline-block; padding: 3px 10px; border-radius: 4px;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.04em;
+}
+.s-move   { background: var(--accent-3); color: var(--accent); }
+.s-rotate { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+.s-avoid  { background: var(--red-bg); color: var(--red); }
+.s-stop   { background: var(--bg-code); color: var(--ink-3); border: 1px solid var(--divider); }
+
+/* ── State Arrow ── */
+.st-row { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin: 12px 0; }
+.st-arr { color: var(--ink-3); font-size: 15px; }
+</style>
+</head>
+<body>
+
+<nav class="topbar">
+  <a class="topbar-logo" href="#">CHOI SEUNGJAE · PORTFOLIO</a>
+  <ul class="topbar-nav">
+    <li><a href="#background">개발 배경</a></li>
+    <li><a href="#architecture">시스템 구조</a></li>
+    <li><a href="#implementation">구현 상세</a></li>
+    <li><a href="#result">검증 결과</a></li>
+    <li><a href="#stack">기술 스택</a></li>
+  </ul>
+</nav>
+
+<div class="page">
+
+  <!-- ── Hero ── -->
+  <header class="hero">
+    <div class="hero-eyebrow">Mobile Robotics · ROS 2 · 2024 · CNU AVSE Team 4</div>
+    <h1>모바일 로봇 자율 주행 <span>텀 프로젝트</span></h1>
+    <p class="hero-sub">
+      충남대학교 자율운항시스템공학과 모바일 로보틱스 수업 텀 프로젝트로, 차동 구동 로봇의 자율 주차 및 다중 웨이포인트 경로 추종을 구현하였다.
+      극좌표 피드백 제어기(polar coordinate controller)를 기반으로 두 태스크를 설계하였으며, LiDAR 기반 장애물 회피 기능을 Task 3에 추가로 통합하였다.
+    </p>
+    <div class="badge-row">
+      <span class="badge b-ros">ROS 2 Humble</span>
+      <span class="badge b-py">Python 3</span>
+      <span class="badge b-lidar">LiDAR</span>
+      <span class="badge b-ctrl">Polar Controller</span>
+    </div>
+  </header>
+
+  <!-- ── Metric Row ── -->
+  <div class="metric-row">
+    <div class="metric-card">
+      <div class="metric-num">2</div>
+      <div class="metric-label">구현 태스크</div>
+      <div class="metric-desc">Task 2 자율 주차, Task 3 웨이포인트 내비게이션 (충돌 회피 포함)</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-num">0.1 m</div>
+      <div class="metric-label">위치 도달 임계값</div>
+      <div class="metric-desc">웨이포인트 전환 기준 거리. 주차 태스크는 5 cm (0.05 m) 적용</div>
+    </div>
+    <div class="metric-card">
+      <div class="metric-num">0.5 m</div>
+      <div class="metric-label">충돌 회피 감지 거리</div>
+      <div class="metric-desc">전방 60도 섹터 내 장애물 감지 임계값. 초과 시 회피 시퀀스 자동 진입</div>
+    </div>
+  </div>
+
+  <!-- ── 01 개발 배경 ── -->
+  <section class="section" id="background">
+    <div class="section-header">
+      <span class="section-num">01</span>
+      <span class="section-title">개발 배경 및 문제 정의</span>
+    </div>
+
+    <div class="card">
+      <div class="card-title">과제 개요</div>
+      <p>
+        모바일 로보틱스 수업에서는 실제 로봇 플랫폼을 대상으로 두 가지 자율 주행 태스크를 구현하고 검증하는 것을 목표로 하였다.
+        전역 경로 계획기(global planner)나 Navigation2 스택 없이, 순수 피드백 제어만으로 목표 포즈에 도달하는 것이 핵심 제약 조건이었다.
+      </p>
+      <div class="callout callout-problem">
+        <strong>제약:</strong> ROS 2 Nav2 미사용. <code>/odom</code> 과 <code>/cmd_vel</code> 토픽만으로 제어 루프 완성. 목표 좌표는 런치 파라미터로 주입, 노드 내 하드코딩 금지.
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">Task 2 — 자율 주차</div>
+        <p>
+          단일 목표 포즈 (x, y, θ) 로 로봇을 정밀하게 이동시키고, 위치 오차와 헤딩 오차가 모두 임계값 이하일 때 정지한다.
+          실제 주차 시나리오에서는 최종 방향 정렬이 필수적이므로 beta 항을 포함한 3-gain 제어기를 적용하였다.
+        </p>
+      </div>
+      <div class="card">
+        <div class="card-title">Task 3 — 웨이포인트 내비게이션</div>
+        <p>
+          3개의 중간 웨이포인트를 순서대로 경유한 후 원점으로 복귀한다.
+          각 구간 전환 시 다음 구간 방향으로 사전 정렬(ROTATE 단계)을 수행하여 경로 이탈을 최소화한다.
+          마지막 구간(원점 복귀)에서는 LiDAR로 전방 장애물을 감지하여 자동 회피한다.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 02 시스템 구조 ── -->
+  <section class="section" id="architecture">
+    <div class="section-header">
+      <span class="section-num">02</span>
+      <span class="section-title">시스템 구조 및 데이터 흐름</span>
+    </div>
+
+    <div class="card">
+      <div class="card-title">ROS 2 노드 구성</div>
+      <table>
+        <thead>
+          <tr><th>노드</th><th>실행 파일</th><th>태스크</th><th>역할</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>csj_parking</code></td><td><code>parking2</code></td><td>Task 2</td><td>단일 목표 포즈 도달 후 정지</td></tr>
+          <tr><td><code>csj_waypoint</code></td><td><code>waypoint</code></td><td>Task 3</td><td>3-waypoint 순차 경유 후 원점 복귀</td></tr>
+          <tr><td><code>team4_waypoint_with_conditional_avoidance</code></td><td><code>waypoint_col_avoid</code></td><td>Task 3+</td><td>웨이포인트 추종 + LiDAR 충돌 회피</td></tr>
+          <tr><td><code>csj_visual_marker</code></td><td><code>visual_pub</code></td><td>공통</td><td>RViz2 목표 지점 화살표 마커 시각화</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">토픽 인터페이스</div>
+      <table>
+        <thead>
+          <tr><th>토픽</th><th>타입</th><th>방향</th><th>용도</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>/odom</code></td><td>nav_msgs/Odometry</td><td>Subscribe</td><td>현재 위치 (x, y) 및 쿼터니언 → yaw 변환</td></tr>
+          <tr><td><code>/scan</code></td><td>sensor_msgs/LaserScan</td><td>Subscribe</td><td>전방 LiDAR 거리 데이터 (충돌 회피용)</td></tr>
+          <tr><td><code>/cmd_vel</code></td><td>geometry_msgs/Twist</td><td>Publish</td><td>선속도 v, 각속도 ω 명령</td></tr>
+          <tr><td><code>/marker_goals</code></td><td>visualization_msgs/Marker</td><td>Publish</td><td>RViz2 목표 포즈 화살표 마커</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">제어 데이터 흐름</div>
+      <div class="pipeline">
+        <div class="pipe-step">
+          <div class="plabel">센서</div>
+          <div class="pval">/odom</div>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step">
+          <div class="plabel">오차 계산</div>
+          <div class="pval">rho / alpha / beta</div>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step" style="border-color:var(--accent); background:var(--accent-3);">
+          <div class="plabel" style="color:var(--accent);">극좌표 제어기</div>
+          <div class="pval">v, ω</div>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step">
+          <div class="plabel">속도 제한</div>
+          <div class="pval">clamp</div>
+        </div>
+        <div class="pipe-arrow">→</div>
+        <div class="pipe-step">
+          <div class="plabel">출력</div>
+          <div class="pval">/cmd_vel</div>
+        </div>
+      </div>
+      <p class="pipe-note">충돌 회피 활성화 시 /scan 콜백이 상태 머신에 끼어들어 AVOID_ROTATE → AVOID_FORWARD 시퀀스를 삽입한다.</p>
+    </div>
+  </section>
+
+  <!-- ── 03 핵심 구현 ── -->
+  <section class="section" id="implementation">
+    <div class="section-header">
+      <span class="section-num">03</span>
+      <span class="section-title">핵심 구현 상세</span>
+    </div>
+
+    <div class="card">
+      <div class="card-title">극좌표 피드백 제어기</div>
+      <p>로봇과 목표 포즈 사이의 오차를 극좌표 3변수(rho, alpha, beta)로 분해하고, 각 변수에 비례 이득을 곱해 속도 명령을 생성한다.</p>
+      <pre><span class="cmt"># 오차 분해</span>
+rho   = <span class="fn">sqrt</span>(dx**<span class="num">2</span> + dy**<span class="num">2</span>)          <span class="cmt"># 목표까지의 유클리드 거리</span>
+alpha = <span class="fn">atan2</span>(dy, dx) - theta_curr    <span class="cmt"># 목표 방향 오차</span>
+beta  = -(theta_curr + alpha)          <span class="cmt"># 최종 헤딩 정렬 오차</span>
+
+<span class="cmt"># 속도 명령 생성</span>
+v     = k_rho   * rho
+omega = k_alpha * alpha + k_beta * beta
+
+<span class="cmt"># 속도 제한 적용</span>
+v     = <span class="fn">max</span>(v_min, <span class="fn">min</span>(v_max, v))
+omega = <span class="fn">max</span>(-omega_max, <span class="fn">min</span>(omega_max, omega))</pre>
+
+      <div class="callout callout-info">
+        <strong>설계 의도:</strong> 마지막 원점 복귀 구간에서는 beta 항을 제거하고 alpha 항만 사용한다. 원점에서 최종 헤딩 정렬을 강제하면 제자리 회전 후 정지하지 않고 진동할 수 있기 때문이다.
+      </div>
+
+      <table style="margin-top:14px;">
+        <thead><tr><th>이득</th><th>값 (Waypoint)</th><th>값 (Parking)</th><th>역할</th></tr></thead>
+        <tbody>
+          <tr><td><code>k_rho</code></td><td>0.2</td><td>0.2</td><td>거리에 비례하는 전진 속도</td></tr>
+          <tr><td><code>k_alpha</code></td><td>1.0</td><td>1.0</td><td>목표 방향 오차 보정 각속도</td></tr>
+          <tr><td><code>k_beta</code></td><td>-0.3</td><td>-0.6</td><td>최종 헤딩 정렬 (주차는 더 강하게 적용)</td></tr>
+          <tr><td><code>v_max</code></td><td>0.12 m/s</td><td>0.12 m/s</td><td>최대 선속도</td></tr>
+          <tr><td><code>omega_max</code></td><td>0.8 rad/s</td><td>0.8 rad/s</td><td>최대 각속도</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">웨이포인트 상태 머신</div>
+      <p>각 웨이포인트 전환 시 제자리 회전 단계(ROTATE)를 삽입하여 다음 구간 방향으로 사전 정렬한다. 급격한 방향 전환으로 인한 경로 이탈을 방지하기 위한 설계다.</p>
+
+      <div class="st-row">
+        <span class="state-badge s-move">MOVE</span>
+        <span class="st-arr">→</span>
+        <span class="state-badge s-rotate">ROTATE</span>
+        <span class="st-arr">→</span>
+        <span class="state-badge s-move">MOVE</span>
+        <span class="st-arr">→</span>
+        <span class="state-badge s-rotate">ROTATE</span>
+        <span class="st-arr">→ ... →</span>
+        <span class="state-badge s-stop">STOP</span>
+      </div>
+
+      <div class="st-row" style="margin-top:6px;">
+        <span class="st-arr" style="font-size:12px; color:var(--ink-3);">충돌 감지 시 (idx == 3 한정):</span>
+        <span class="state-badge s-avoid">AVOID_ROTATE</span>
+        <span class="st-arr">→</span>
+        <span class="state-badge s-avoid">AVOID_FORWARD</span>
+        <span class="st-arr">→</span>
+        <span class="state-badge s-move">MOVE (재개)</span>
+      </div>
+
+      <div class="flow" style="margin-top:18px;">
+        <div class="flow-step">
+          <div class="flow-num">1</div>
+          <div class="flow-body"><strong>MOVE:</strong> 극좌표 제어기로 현재 웨이포인트를 향해 주행. <code>rho &lt; 0.1 m</code> 도달 시 전환.</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">2</div>
+          <div class="flow-body"><strong>ROTATE:</strong> 다음 웨이포인트 방향(<code>atan2</code>)으로 제자리 회전. 헤딩 오차 15도 이하 시 인덱스 증가 후 MOVE 복귀.</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">3</div>
+          <div class="flow-body"><strong>STOP:</strong> 마지막 원점(idx == 3) 도달 시 zero twist 발행 후 종료.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">LiDAR 기반 충돌 회피</div>
+      <p>
+        <code>/scan</code> 콜백에서 전방 60도 섹터(330°–360° ∪ 0°–30°)의 유효 거리 값을 수집하고,
+        최솟값이 0.5 m 미만이면 즉시 회피 시퀀스를 삽입한다.
+        회피는 마지막 구간(idx == 3)에서만 활성화되어 중간 구간의 불필요한 인터럽트를 방지한다.
+      </p>
+<pre><span class="kw">for</span> i, dist <span class="kw">in</span> <span class="fn">enumerate</span>(scan.ranges):
+    angle = scan.angle_min + i * scan.angle_increment
+    <span class="kw">if</span> scan.range_min &lt; dist &lt; scan.range_max:
+        <span class="cmt"># 전방 ±30도 필터 (라디안 기준)</span>
+        <span class="kw">if</span> (angle &gt;= <span class="num">5.76</span> <span class="kw">and</span> angle &lt;= <span class="num">6.28</span>) <span class="kw">or</span> (angle &lt;= <span class="num">0.523</span>):
+            front_ranges.<span class="fn">append</span>(dist)
+
+<span class="kw">if</span> front_ranges <span class="kw">and</span> <span class="fn">min</span>(front_ranges) &lt; <span class="num">0.5</span>:
+    self.phase = <span class="str">"AVOID_ROTATE"</span>    <span class="cmt"># 왼쪽 1.5 s 회전 → 직진 5.0 s</span></pre>
+
+      <table style="margin-top:12px;">
+        <thead><tr><th>파라미터</th><th>값</th></tr></thead>
+        <tbody>
+          <tr><td>감지 거리 임계값</td><td>0.5 m</td></tr>
+          <tr><td>회피 회전 시간</td><td>1.5 s (좌회전 0.8 rad/s)</td></tr>
+          <tr><td>회피 직진 시간</td><td>5.0 s (0.12 m/s)</td></tr>
+          <tr><td>활성화 구간</td><td>idx == 3 (원점 복귀 구간 한정)</td></tr>
+        </tbody>
+      </table>
+      <div class="callout callout-warn">
+        <strong>한계:</strong> 시간 기반 회피(time-based open-loop)이므로 장애물의 크기나 위치에 따라 회피 후 경로가 크게 벗어날 수 있다. 회피 완료 후 원래 목표 방향으로의 복귀는 극좌표 제어기가 자연스럽게 처리한다.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">런치 파라미터 설계</div>
+      <p>목표 좌표를 노드 내부에 하드코딩하지 않고 런치 파일의 <code>parameters</code> 필드로 주입한다. 로봇 환경 변경 시 런치 파일만 수정하면 된다.</p>
+      <pre><span class="cmt"># task3.launch.py 발췌</span>
+<span class="type">Node</span>(
+    package=<span class="str">'termproject'</span>,
+    executable=<span class="str">'waypoint'</span>,
+    parameters=[
+        {<span class="str">'waypoint_1_x'</span>: <span class="num">1.05</span>}, {<span class="str">'waypoint_1_y'</span>: -<span class="num">1.0</span>},
+        {<span class="str">'waypoint_2_x'</span>: <span class="num">2.1</span>},  {<span class="str">'waypoint_2_y'</span>:  <span class="num">1.0</span>},
+        {<span class="str">'waypoint_3_x'</span>: <span class="num">3.15</span>}, {<span class="str">'waypoint_3_y'</span>: -<span class="num">1.0</span>},
+    ]
+)</pre>
+    </div>
+  </section>
+
+  <!-- ── 04 검증 결과 ── -->
+  <section class="section" id="result">
+    <div class="section-header">
+      <span class="section-num">04</span>
+      <span class="section-title">검증 결과</span>
+    </div>
+
+    <div class="card">
+      <div class="card-title">태스크별 검증 항목</div>
+      <div class="flow">
+        <div class="flow-step">
+          <div class="flow-num">✓</div>
+          <div class="flow-body"><strong>Task 2 주차:</strong> 목표 포즈 (1.0, 0.0, 0°) 도달. 위치 오차 0.05 m 이하, 헤딩 오차 2° 이하에서 자동 정지 확인.</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">✓</div>
+          <div class="flow-body"><strong>Task 3 웨이포인트:</strong> 3개 중간 웨이포인트 순차 경유 및 원점 복귀 완료. 각 전환 시 ROTATE 단계로 헤딩 선정렬 동작 확인.</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">✓</div>
+          <div class="flow-body"><strong>충돌 회피:</strong> 마지막 구간에서 전방 0.5 m 이내 장애물 감지 시 회피 시퀀스(회전 1.5 s + 직진 5.0 s) 자동 실행 후 웨이포인트 추종 재개 확인.</div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-num">✓</div>
+          <div class="flow-body"><strong>파라미터 주입:</strong> 런치 파일의 좌표값 변경만으로 재빌드 없이 목표 위치 수정 가능. RViz2 마커로 목표 포즈 실시간 시각화 확인.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <div class="card-title">제어 성능 파라미터</div>
+        <table>
+          <thead><tr><th>항목</th><th>값</th></tr></thead>
+          <tbody>
+            <tr><td>위치 도달 임계값</td><td>0.1 m (주차: 0.05 m)</td></tr>
+            <tr><td>헤딩 도달 임계값</td><td>15° (주차: 2°)</td></tr>
+            <tr><td>최대 선속도</td><td>0.12 m/s</td></tr>
+            <tr><td>최대 각속도</td><td>0.8 rad/s</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="card">
+        <div class="card-title">테스트 환경</div>
+        <table>
+          <thead><tr><th>항목</th><th>내용</th></tr></thead>
+          <tbody>
+            <tr><td>ROS 버전</td><td>ROS 2 Humble</td></tr>
+            <tr><td>플랫폼</td><td>Ubuntu 22.04</td></tr>
+            <tr><td>로봇 플랫폼</td><td>차동 구동 모바일 로봇</td></tr>
+            <tr><td>시각화</td><td>RViz2</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="callout callout-solution">
+      <strong>결론:</strong> Nav2 스택 없이 순수 극좌표 피드백 제어기만으로 주차 및 다중 웨이포인트 경로 추종 모두 성공적으로 동작하였다. 런치 파라미터 분리 설계로 실험 환경 변경 시 빠른 재구성이 가능하였다.
+    </div>
+  </section>
+
+  <!-- ── 05 기술 스택 ── -->
+  <section class="section" id="stack">
+    <div class="section-header">
+      <span class="section-num">05</span>
+      <span class="section-title">기술 스택 및 환경</span>
+    </div>
+
+    <div class="grid-3">
+      <div class="stack-item">
+        <div class="stack-name">ROS 2 Humble</div>
+        <div class="stack-role">노드 통신, 토픽 퍼블리시/서브스크라이브, 런치 시스템, ament_python 빌드</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-name">Python 3 / rclpy</div>
+        <div class="stack-role">전체 제어 로직 구현. Node 클래스 상속, 파라미터 선언, 콜백 등록</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-name">tf_transformations</div>
+        <div class="stack-role">오도메트리 쿼터니언을 오일러 각(yaw)으로 변환. euler_from_quaternion 사용</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-name">sensor_msgs/LaserScan</div>
+        <div class="stack-role">LiDAR 스캔 데이터 수신 및 전방 섹터 필터링으로 장애물 감지</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-name">nav_msgs/Odometry</div>
+        <div class="stack-role">로봇 현재 위치(x, y) 및 자세(quaternion) 수신. 제어 오차 계산에 사용</div>
+      </div>
+      <div class="stack-item">
+        <div class="stack-name">RViz2</div>
+        <div class="stack-role">목표 포즈 화살표 마커 시각화 및 경로 모니터링. visualization_msgs/Marker</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    <div><strong>최승재 (Choi Seungjae)</strong> · 자율운항시스템공학과 · 충남대학교</div>
+    <div>모바일 로보틱스 텀 프로젝트 · CNU AVSE Team 4 · 2024</div>
+  </footer>
+
+</div>
+</body>
+</html>
