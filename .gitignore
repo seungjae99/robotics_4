@@ -29,3 +29,7 @@ dist/
 CMakeFiles/
 cmake_install.cmake
 Makefile
+
+# === 로컬 전용 파일 ===
+CLAUDE.md
+PROJECT_SUMMARY.md
