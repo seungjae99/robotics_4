@@ -4,6 +4,8 @@ CNU AVSE mobile robotics term project
 
 team 4
 
+**Project Report:** [seungjae99.github.io/robotics_4](https://seungjae99.github.io/robotics_4/)
+
 - **Task 2: Parking**
 - **Task 3: Waypoint Navigation**
 

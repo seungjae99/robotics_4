@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ROS 2 mobile robot autonomy package for parking and multi-waypoint navigation with LiDAR collision avoidance" />
+  <title>Mobile Robotics Term Project — Team 4</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0f1117;
+      color: #c9d1d9;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      font-size: 15px;
+      line-height: 1.7;
+      padding: 48px 16px 96px;
+    }
+
+    .page {
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    .site-header {
+      border-bottom: 1px solid #2d3148;
+      padding-bottom: 32px;
+      margin-bottom: 40px;
+    }
+    .badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .badge {
+      background: #1e2130;
+      border: 1px solid #2d3148;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 3px 9px;
+      color: #8b949e;
+      text-transform: uppercase;
+    }
+    .badge.accent { color: #58a6ff; border-color: #1f3a5f; background: #0d1f36; }
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      color: #e6edf3;
+      margin-bottom: 10px;
+    }
+    .subtitle {
+      color: #8b949e;
+      font-size: 15px;
+    }
+
+    /* Cards */
+    .card {
+      background: #1e2130;
+      border: 1px solid #2d3148;
+      border-radius: 10px;
+      padding: 28px 32px;
+      margin-bottom: 20px;
+    }
+    .card h2 {
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #58a6ff;
+      margin-bottom: 18px;
+    }
+    .card p { margin-bottom: 10px; color: #c9d1d9; }
+    .card p:last-child { margin-bottom: 0; }
+
+    /* Two-column task grid */
+    .task-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+    @media (max-width: 600px) { .task-grid { grid-template-columns: 1fr; } }
+
+    .task-card {
+      background: #1e2130;
+      border: 1px solid #2d3148;
+      border-radius: 10px;
+      padding: 24px 26px;
+    }
+    .task-card .task-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #3fb950;
+      margin-bottom: 6px;
+    }
+    .task-card h3 {
+      font-size: 17px;
+      font-weight: 700;
+      color: #e6edf3;
+      margin-bottom: 10px;
+    }
+    .task-card p { font-size: 14px; color: #8b949e; line-height: 1.6; }
+
+    /* Control law block */
+    .formula-block {
+      background: #0f1117;
+      border: 1px solid #2d3148;
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin: 14px 0;
+      font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+      font-size: 13px;
+      color: #79c0ff;
+      line-height: 2;
+    }
+    .formula-block .comment {
+      color: #484f58;
+      font-style: normal;
+    }
+
+    /* Param table */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    thead tr { border-bottom: 1px solid #2d3148; }
+    th {
+      text-align: left;
+      padding: 8px 10px;
+      color: #8b949e;
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    td {
+      padding: 9px 10px;
+      color: #c9d1d9;
+      border-bottom: 1px solid #1a1d2e;
+    }
+    tbody tr:last-child td { border-bottom: none; }
+    td.mono {
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 13px;
+      color: #79c0ff;
+    }
+    td.val {
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 13px;
+      color: #d2a8ff;
+    }
+
+    /* Phase state machine */
+    .phase-row {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      flex-wrap: wrap;
+      margin: 16px 0 6px;
+    }
+    .phase-box {
+      background: #0d1f36;
+      border: 1px solid #1f3a5f;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #58a6ff;
+      white-space: nowrap;
+    }
+    .phase-box.red {
+      background: #2d1a1a;
+      border-color: #5a2020;
+      color: #f85149;
+    }
+    .phase-arrow {
+      padding: 0 8px;
+      color: #484f58;
+      font-size: 16px;
+    }
+
+    /* Topic table highlight */
+    .topic-dir {
+      display: inline-block;
+      padding: 2px 7px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+    .topic-dir.sub { background: #0d1f36; color: #58a6ff; }
+    .topic-dir.pub { background: #1a2d1a; color: #3fb950; }
+
+    /* Footer */
+    footer {
+      margin-top: 56px;
+      border-top: 1px solid #2d3148;
+      padding-top: 24px;
+      text-align: center;
+      font-size: 13px;
+      color: #484f58;
+    }
+    a { color: #58a6ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="badge-row">
+      <span class="badge accent">ROS 2 Humble</span>
+      <span class="badge">Python 3</span>
+      <span class="badge">Mobile Robotics</span>
+      <span class="badge">CNU AVSE</span>
+    </div>
+    <h1>Mobile Robotics Term Project</h1>
+    <p class="subtitle">Team 4 &mdash; Autonomous parking and waypoint navigation on a differential-drive robot using a polar coordinate controller and LiDAR-based collision avoidance.</p>
+  </header>
+
+  <!-- Overview -->
+  <div class="card">
+    <h2>Overview</h2>
+    <p>
+      This project implements two autonomous driving tasks for a wheeled mobile robot running under ROS 2.
+      Both tasks share the same core control law: a <strong>polar coordinate feedback controller</strong>
+      that computes linear and angular velocity commands from the robot's current odometry relative to a goal pose.
+    </p>
+    <p>
+      All motion commands are published to <code>/cmd_vel</code> and robot state is read from <code>/odom</code>.
+      Waypoint goals and parking targets are passed as ROS 2 launch parameters, keeping the node logic
+      decoupled from specific map coordinates.
+    </p>
+  </div>
+
+  <!-- Tasks -->
+  <div class="task-grid">
+    <div class="task-card">
+      <div class="task-label">Task 2</div>
+      <h3>Precision Parking</h3>
+      <p>Navigate to a single target pose (x, y, &theta;) using the polar controller. First translates to the goal position, then corrects heading to match the specified angle. Stops when both position error and heading error fall below threshold.</p>
+    </div>
+    <div class="task-card">
+      <div class="task-label">Task 3</div>
+      <h3>Waypoint Navigation</h3>
+      <p>Sequences through three configurable waypoints and returns to the origin. Each segment follows a MOVE &rarr; ROTATE state machine. A collision-avoidance variant activates on the final segment using the front-facing LiDAR sector.</p>
+    </div>
+  </div>
+
+  <!-- Control Law -->
+  <div class="card">
+    <h2>Control Law</h2>
+    <p>
+      The polar coordinate controller decomposes the error between the robot and its goal into three scalar quantities
+      and produces smooth velocity commands without requiring a global planner.
+    </p>
+    <div class="formula-block">
+      <span class="comment">-- error decomposition --</span><br>
+      rho   = sqrt(dx^2 + dy^2)        <span class="comment">-- Euclidean distance to goal</span><br>
+      alpha = atan2(dy, dx) - theta     <span class="comment">-- heading error toward goal</span><br>
+      beta  = -(theta + alpha)          <span class="comment">-- final heading alignment error</span><br><br>
+      <span class="comment">-- velocity commands --</span><br>
+      v     = k_rho  * rho<br>
+      omega = k_alpha * alpha + k_beta * beta
+    </div>
+    <p>
+      The beta term is only applied on intermediate waypoints so the robot aligns its heading toward the next segment.
+      On the final return-to-origin leg, only the alpha term is used.
+    </p>
+
+    <table>
+      <thead>
+        <tr><th>Gain</th><th>Value</th><th>Role</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="mono">k_rho</td><td class="val">0.2</td><td>Proportional speed from distance</td></tr>
+        <tr><td class="mono">k_alpha</td><td class="val">1.0</td><td>Correction toward goal heading</td></tr>
+        <tr><td class="mono">k_beta</td><td class="val">&minus;0.3 / &minus;0.6</td><td>Final heading alignment (waypoint / parking)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Waypoint State Machine -->
+  <div class="card">
+    <h2>Waypoint Navigation State Machine</h2>
+    <p>Each waypoint transition follows a two-phase sequence to prevent the robot from overshooting while turning.</p>
+
+    <div class="phase-row">
+      <div class="phase-box">MOVE</div>
+      <div class="phase-arrow">&rarr;</div>
+      <div class="phase-box">ROTATE</div>
+      <div class="phase-arrow">&rarr;</div>
+      <div class="phase-box">MOVE (next)</div>
+      <div class="phase-arrow">&rarr;</div>
+      <div class="phase-box">...</div>
+      <div class="phase-arrow">&rarr;</div>
+      <div class="phase-box">STOP</div>
+    </div>
+
+    <p style="margin-top:14px;">
+      In <strong>MOVE</strong>, the polar controller drives toward the current waypoint.
+      Once the robot is within the position threshold (0.1 m), it switches to <strong>ROTATE</strong>
+      and pre-aligns its heading toward the <em>next</em> waypoint before advancing the index.
+      The final origin waypoint skips the ROTATE phase and issues a full stop.
+    </p>
+
+    <p style="margin-top:10px;">
+      When collision avoidance is enabled, the scan callback can interrupt MOVE or ROTATE at any time
+      (on the final segment only) and insert a two-step recovery sequence:
+    </p>
+    <div class="phase-row" style="margin-top:10px;">
+      <div class="phase-box red">AVOID_ROTATE</div>
+      <div class="phase-arrow">&rarr;</div>
+      <div class="phase-box red">AVOID_FORWARD</div>
+      <div class="phase-arrow">&rarr;</div>
+      <div class="phase-box">MOVE (resume)</div>
+    </div>
+  </div>
+
+  <!-- Collision Avoidance -->
+  <div class="card">
+    <h2>LiDAR Collision Avoidance</h2>
+    <p>
+      The avoidance module monitors the <strong>front 60-degree sector</strong> of the LiDAR scan
+      (&#177;30 degrees around the robot's forward axis, spanning approximately 330&ndash;360 degrees
+      and 0&ndash;30 degrees in the scan frame).
+    </p>
+    <p>
+      If any valid range reading in that sector falls below the safe distance threshold,
+      the node immediately transitions to <code>AVOID_ROTATE</code>, spinning left at 0.8 rad/s
+      for 1.5 seconds, then drives straight for 5.0 seconds before resuming waypoint tracking.
+    </p>
+    <p>
+      Avoidance is intentionally constrained to the last waypoint segment (index 3, the return-to-origin leg)
+      to prevent unnecessary interruptions during the main navigation path.
+    </p>
+
+    <table style="margin-top:16px;">
+      <thead>
+        <tr><th>Parameter</th><th>Value</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Safe distance threshold</td><td class="val">0.5 m</td></tr>
+        <tr><td>Avoidance rotate duration</td><td class="val">1.5 s</td></tr>
+        <tr><td>Avoidance forward duration</td><td class="val">5.0 s</td></tr>
+        <tr><td>Avoidance angular velocity</td><td class="val">0.8 rad/s (left)</td></tr>
+        <tr><td>Active segment</td><td class="val">Index 3 only (return to origin)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ROS Interface -->
+  <div class="card">
+    <h2>ROS 2 Interface</h2>
+    <table>
+      <thead>
+        <tr><th>Topic</th><th>Type</th><th>Direction</th><th>Purpose</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="mono">/odom</td>
+          <td>nav_msgs/Odometry</td>
+          <td><span class="topic-dir sub">SUB</span></td>
+          <td>Robot pose and orientation (quaternion to Euler)</td>
+        </tr>
+        <tr>
+          <td class="mono">/scan</td>
+          <td>sensor_msgs/LaserScan</td>
+          <td><span class="topic-dir sub">SUB</span></td>
+          <td>LiDAR ranges for collision detection</td>
+        </tr>
+        <tr>
+          <td class="mono">/cmd_vel</td>
+          <td>geometry_msgs/Twist</td>
+          <td><span class="topic-dir pub">PUB</span></td>
+          <td>Linear and angular velocity commands</td>
+        </tr>
+        <tr>
+          <td class="mono">/marker_goals</td>
+          <td>visualization_msgs/Marker</td>
+          <td><span class="topic-dir pub">PUB</span></td>
+          <td>RViz arrow markers for goal visualization</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Launch Parameters -->
+  <div class="card">
+    <h2>Launch Parameters</h2>
+    <p>All goal coordinates are passed at launch time. No hardcoded targets exist inside the nodes.</p>
+
+    <table style="margin-top:12px;">
+      <thead>
+        <tr><th>Task</th><th>Parameter</th><th>Default</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Task 2</td><td class="mono">x_goal</td><td class="val">1.0</td><td>Target x position (m)</td>
+        </tr>
+        <tr>
+          <td>Task 2</td><td class="mono">y_goal</td><td class="val">0.0</td><td>Target y position (m)</td>
+        </tr>
+        <tr>
+          <td>Task 2</td><td class="mono">theta_goal_deg</td><td class="val">0.0</td><td>Target heading (degrees)</td>
+        </tr>
+        <tr>
+          <td>Task 3</td><td class="mono">waypoint_1_x / _y</td><td class="val">1.05, &minus;1.0</td><td>First waypoint (m)</td>
+        </tr>
+        <tr>
+          <td>Task 3</td><td class="mono">waypoint_2_x / _y</td><td class="val">2.1, 1.0</td><td>Second waypoint (m)</td>
+        </tr>
+        <tr>
+          <td>Task 3</td><td class="mono">waypoint_3_x / _y</td><td class="val">3.15, &minus;1.0</td><td>Third waypoint (m)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Quick Start -->
+  <div class="card">
+    <h2>Quick Start</h2>
+    <div class="formula-block" style="color:#c9d1d9; line-height:2.2;">
+      <span class="comment"># 1. Clone and build</span><br>
+      mkdir -p ~/termproject_ws/src &amp;&amp; cd ~/termproject_ws/src<br>
+      git clone https://github.com/seungjae99/robotics_4.git termproject<br>
+      cd ~/termproject_ws &amp;&amp; colcon build --symlink-install<br>
+      source install/setup.bash<br><br>
+      <span class="comment"># 2. Run tasks</span><br>
+      ros2 launch termproject task2.launch.py<br>
+      ros2 launch termproject task3.launch.py<br>
+      ros2 launch termproject task3_col_avoid.launch.py
+    </div>
+  </div>
+
+  <footer>
+    <p>CNU AVSE Mobile Robotics &mdash; Team 4 &mdash; Tested on ROS 2 Humble</p>
+    <p style="margin-top:6px;"><a href="https://github.com/seungjae99/robotics_4">github.com/seungjae99/robotics_4</a></p>
+  </footer>
+
+</div>
+</body>
+</html>

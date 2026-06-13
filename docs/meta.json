@@ -1,0 +1,4 @@
+{
+  "desc": "ROS 2 mobile robot autonomy package for parking and multi-waypoint navigation with LiDAR collision avoidance",
+  "tags": ["ROS 2", "Python"]
+}
